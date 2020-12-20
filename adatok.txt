@@ -1,0 +1,5 @@
+L;Vortex;LED-V32ZH8DC;54999;-;32 col,B energiaosztály,HD ready
+L;Orion;PIF 24-D;44899;-;
+S;LG;70LB650V;699899;+;LED,3D,70 col,A+ energiaosztály,Full HD
+L;Toshiba;32 W 3433DG;79999;-;smart,32 col,A energiaosztály,HD ready
+E;LG;50PB560B;119999;plazma,50 col,B energiaosztály

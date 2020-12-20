@@ -27,8 +27,10 @@ public class MediaPiac implements TeveUzlet {
     public List<Teve> adottTulajdonsaguTevek(String tulajdonsag) {
         List<Teve> adottTulajdonsaguak = new ArrayList<>();
        for (Teve t: tevek) {
-           if(t.getTulajdonsagok().toString().contains(tulajdonsag))
-               adottTulajdonsaguak.add(t);
+           for (String s : t.getTulajdonsagok()) {
+               if(s.contains(tulajdonsag))
+                   adottTulajdonsaguak.add(t);
+           }
        }
        adottTulajdonsaguak.sort(null);
        return adottTulajdonsaguak;
@@ -38,10 +40,12 @@ public class MediaPiac implements TeveUzlet {
     public List<Teve> adottTulajdonsaguModernTevek(String tulajdonsag) {
         List<Teve> adottTulajdonsaguak = new ArrayList<>();
         for (Teve t: tevek) {
-            if(t.getTulajdonsagok().toString().contains(tulajdonsag) &&
-                    ((t instanceof LEDTeve && ((LEDTeve) t).isOled())
-                            || (t instanceof SmartTeve && ((SmartTeve) t).isUjAlkalmazasok())))
-                adottTulajdonsaguak.add(t);
+            for (String s : t.getTulajdonsagok()) {
+                if (s.contains(tulajdonsag) &&
+                        ((t instanceof LEDTeve && ((LEDTeve) t).isOled())
+                                || (t instanceof SmartTeve && ((SmartTeve) t).isUjAlkalmazasok())))
+                    adottTulajdonsaguak.add(t);
+            }
         }
         adottTulajdonsaguak.sort(null);
         return adottTulajdonsaguak;
@@ -66,10 +70,52 @@ public class MediaPiac implements TeveUzlet {
             ledTevek.sort(null);
             smartTevek.sort(null);
             egyeb.sort(null);
-            fw.append("LED-tévék " + ledTevek.toString() + "\nSmart tévék " +
-                    smartTevek.toString() + "\nEgyéb tévék " + egyeb.toString());
+            fw.append("LED-tévék\n");
+            for (Teve t : ledTevek) {
+                fw.append(t + "\n");
+            }
+            fw.append("Smart tévék\n");
+            for (Teve t : smartTevek) {
+                fw.append(t + "\n");
+            }
+            fw.append("Egyéb tévék\n");
+            for (Teve t : egyeb) {
+                fw.append(t + "\n");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        List<Teve> egyeb = new ArrayList<>();
+        List<Teve> ledTevek = new ArrayList<>();
+        List<Teve> smartTevek = new ArrayList<>();
+        for (Teve t: tevek) {
+            if(t instanceof LEDTeve)
+                ledTevek.add(t);
+            else if(t instanceof SmartTeve)
+                smartTevek.add(t);
+            else
+                egyeb.add(t);
+        }
+        ledTevek.sort(null);
+        smartTevek.sort(null);
+        egyeb.sort(null);
+        sb.append("LED-tévék\n");
+        for (Teve t : ledTevek) {
+            sb.append(t + "\n");
+        }
+        sb.append("Smart tévék\n");
+        for (Teve t : smartTevek) {
+            sb.append(t + "\n");
+        }
+        sb.append("Egyéb tévék\n");
+        for (Teve t : egyeb) {
+            sb.append(t + "\n");
+        }
+        return nev + " " + cim + "\n\n" + sb.toString();
     }
 }

@@ -23,6 +23,10 @@ public class MediaPiac implements TeveUzlet {
         this.tevek = Arrays.asList(teveTomb);
     }
 
+    public List<Teve> getTevek() {
+        return tevek;
+    }
+
     @Override
     public List<Teve> adottTulajdonsaguTevek(String tulajdonsag) {
         List<Teve> adottTulajdonsaguak = new ArrayList<>();

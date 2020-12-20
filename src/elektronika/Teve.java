@@ -53,14 +53,16 @@ public class Teve implements Comparable<Teve> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(" (");
-        for (String s : tulajdonsagok) {
-            sb.append(s);
-            sb.append(", ");
+        if(tulajdonsagok.length > 0) {
+            sb.append(" (");
+            for (String s : tulajdonsagok) {
+                sb.append(s);
+                sb.append(", ");
+            }
+            sb.deleteCharAt(sb.toString().length() - 2);
+            sb.deleteCharAt(sb.toString().length() - 1);
+            sb.append(")");
         }
-        sb.deleteCharAt(sb.toString().length()-2);
-        sb.deleteCharAt(sb.toString().length()-1);
-        sb.append(")");
         return marka + " " + tipus + sb.toString() + ", " + ar + " Ft";
     }
 

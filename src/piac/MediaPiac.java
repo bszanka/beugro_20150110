@@ -23,10 +23,6 @@ public class MediaPiac implements TeveUzlet {
         this.tevek = Arrays.asList(teveTomb);
     }
 
-    public List<Teve> getTevek() {
-        return tevek;
-    }
-
     @Override
     public List<Teve> adottTulajdonsaguTevek(String tulajdonsag) {
         List<Teve> adottTulajdonsaguak = new ArrayList<>();
@@ -45,6 +41,7 @@ public class MediaPiac implements TeveUzlet {
         List<Teve> adottTulajdonsaguak = new ArrayList<>();
         for (Teve t: tevek) {
             for (String s : t.getTulajdonsagok()) {
+//                System.out.println(s);
                 if (s.contains(tulajdonsag) &&
                         ((t instanceof LEDTeve && ((LEDTeve) t).isOled())
                                 || (t instanceof SmartTeve && ((SmartTeve) t).isUjAlkalmazasok())))
@@ -86,6 +83,7 @@ public class MediaPiac implements TeveUzlet {
             for (Teve t : egyeb) {
                 fw.append(t + "\n");
             }
+            fw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -122,4 +120,34 @@ public class MediaPiac implements TeveUzlet {
         }
         return nev + " " + cim + "\n\n" + sb.toString();
     }
+
+    public boolean kezdoBetu(String s){
+        boolean valtozott = false;
+        for (Teve t : tevek) {
+            if(t.getMarka().startsWith(s)) {
+                t.setMarka(t.getMarka().toUpperCase());
+                valtozott = true;
+            }
+        }
+        return valtozott;
+    }
+
+    public  boolean melyikTobb(){
+        int led = 0;
+        int smart = 0;
+        for (Teve t : tevek) {
+            for (String s: t.getTulajdonsagok()) {
+                if(s.equalsIgnoreCase("led"))
+                    led++;
+                if(s.equalsIgnoreCase("smart"))
+                    smart++;
+            }
+            if(t instanceof LEDTeve)
+                led++;
+            if(t instanceof SmartTeve)
+                smart++;
+        }
+        return smart > led;
+    }
+
 }

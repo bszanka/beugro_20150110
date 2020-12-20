@@ -7,6 +7,8 @@ import piac.MediaPiac;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -25,22 +27,27 @@ public class TeveTeszt {
         return atlag;
     }
 
-    public static boolean kezdoBetu(MediaPiac mp, String s){
-        boolean valtozott = false;
-        for (Teve t : mp.getTevek()) {
-            if(t.getMarka().startsWith(s)) {
-                t.setMarka(t.getMarka().toUpperCase());
-                valtozott = true;
+    public static int modernPiacok(Collection<MediaPiac> piacok, String s){
+        int c = 1;
+        for (MediaPiac mp : piacok) {
+            if(mp.adottTulajdonsaguModernTevek(s).size() > 3) {
+                File fajl = new File("lista" + c + ".txt");
+                try {
+                    FileWriter fw = new FileWriter(fajl);
+                    fw.append(mp.toString());
+                    fw.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                c++;
             }
         }
-        return valtozott;
+        return c-1;
     }
-
     public static void main(String[] args) {
         if (args[0].length() == 0)
             return;
         try {
-//            System.out.println(args[0]);
             List<Teve> tevek = new ArrayList<>();
             Scanner fajl = new Scanner(new File(args[0]));
             while (fajl.hasNextLine()) {
@@ -84,7 +91,8 @@ public class TeveTeszt {
                     args[2].length() == 0 ? "Debrecen, Piac u." : args[2],tevek.toArray(new Teve[0]));
 
             Scanner stdin = new Scanner(System.in);
-            List<Teve> res = mp.adottTulajdonsaguTevek(stdin.next());
+            String input = stdin.next();
+            List<Teve> res = mp.adottTulajdonsaguTevek(input);
             for (Teve t: res) {
                 System.out.println(t.toString());
             }
@@ -99,15 +107,19 @@ public class TeveTeszt {
                     System.out.println(t.toString());
             }
 
-            if(kezdoBetu(mp,stdin.next())){
+            if(mp.kezdoBetu(stdin.next())){
                 System.out.println("Változások történtek az alábbi piacon: ");
                 System.out.println(mp.toString());
             }
             else{
                 System.out.println("Nem történt változás.");
             }
+            System.out.println(mp.melyikTobb() ? "Több Smart tévé van, mint LED-es."
+                        : "Több LED-es tévé van, mint Smart.");
 
-
+            List<MediaPiac> piacok = new ArrayList<>();
+            piacok.add(mp);
+            System.out.println("Létrehozott fájlok száma: " + modernPiacok(piacok, input));
 
         } catch (FileNotFoundException e) {
             System.err.println("A megadott fájl nem található!");
